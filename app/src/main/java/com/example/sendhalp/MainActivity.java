@@ -172,14 +172,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case LOCATION_REQUEST_CODE:
-                if (grantResults.length <= 0) {
-                    // If user interaction was interrupted, the permission request is cancelled and you
-                    // receive empty arrays.
-                } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLastLocation();
                 } else {
-                    // Permission denied.
+                    Toast.makeText(this, "Location Permission Denied", Toast.LENGTH_LONG).show();
                 }
                 break;
         }
