@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -13,8 +12,8 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.location.Location;
 import android.media.AudioManager;
+import android.media.MediaRecorder;
 import android.os.Build;
-
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -32,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.Locale;
 
+import java.io.IOException;
 
 //@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -52,6 +52,30 @@ public class MainActivity extends AppCompatActivity {
     private TextView mLatitudeText;
     private TextView mLongitudeText;
 
+    private MediaRecorder recorder = null;
+    private String fileName = null;
+
+    private void startRecording() {
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setOutputFile(fileName);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+        }
+
+        recorder.start();
+    }
+
+    private void stopRecording() {
+        recorder.stop();
+        recorder.release();
+        recorder = null;
+    }
+
     Button flashLightBtn;
     private final int CAMERA_REQUEST_CODE=2;
     boolean hasCameraFlash = false;
@@ -61,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //for audio record
+        fileName = getExternalCacheDir().getAbsolutePath();
+        fileName += "/audiorecord.3gp";
 
         hasCameraFlash = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
 
