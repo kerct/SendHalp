@@ -4,10 +4,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import android.os.Handler;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.media.AudioManager;
@@ -22,15 +24,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-
-//@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class MainActivity extends AppCompatActivity {
 
     Button flashLightBtn;
-    private final int CAMERA_REQUEST_CODE=2;
+    private final int CAMERA_REQUEST_CODE = 2;
     boolean hasCameraFlash = false;
-    private boolean isFlashOn=false;
+    private boolean isFlashOn = false;
+    int k = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         flashLightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                askPermission(Manifest.permission.CAMERA,CAMERA_REQUEST_CODE);
+                askPermission(Manifest.permission.CAMERA, CAMERA_REQUEST_CODE);
 
             }
         });
@@ -58,20 +59,110 @@ public class MainActivity extends AppCompatActivity {
         }
         Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), alert);
         r.play();
-        int i = 0;
-        while (i < 2000) {
-            i++;
-            if (i == 1999) {
-                i = 0;
+
+        Handler handler = new Handler();
+
+        Runnable runnable = new Runnable() {
+            int i = 0;
+            @Override
+            public void run() {
                 audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
+                handler.postDelayed(this, 1000);
             }
-        }
+        };
+        handler.post(runnable);
         //r.stop();
+
+    }
+
+    public void flashScreen(View view) {
+        androidx.constraintlayout.widget.ConstraintLayout bgElement
+                = (androidx.constraintlayout.widget.ConstraintLayout) findViewById(R.id.container);
+
+        Handler handler = new Handler();
+
+        Runnable runnable = new Runnable() {
+            int i = 0;
+            int j = 0;
+            int delay = 1000;
+            @Override
+            public void run() {
+                if (k == 3) {
+                    bgElement.setBackgroundColor(Color.WHITE);
+                } else {
+                    if (i == 0) {
+                        bgElement.setBackgroundColor(Color.BLACK);
+                        i = i + 1;
+                        j = j + 1;
+                    } else {
+                        bgElement.setBackgroundColor(Color.WHITE);
+                        i = 0;
+                    }
+                    if (j % 5 == 0) {
+                        if (delay > 500) {
+                            delay = delay - 100;
+                        }
+                    }
+                }
+
+                handler.postDelayed(this, delay);
+            }
+        };
+        // Start the Runnable immediately
+        handler.post(runnable);
+        if (k == 3) {
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable, 5000);
+        }
+
+    }
+
+    public void general(View view) {
+        //playAlarm(view);  play alarm sound
+        //flashScreen(view);   flash screen
+        //flashLight();        start flashing back flash light
+        //flashLightOff();     stop flashing back flash light
+
+        //k = 3;flashScreen(view);          stop flash screen (together with next line)
     }
 
     private void flashLight() {
         if (hasCameraFlash) {
-            if (isFlashOn) {
+
+            Handler handler = new Handler();
+
+            Runnable runnable = new Runnable() {
+                int i = 0;
+                int j = 0;
+                int delay = 1000;
+                @Override
+                public void run() {
+                    Log.i("APP", "HELMM" + i);
+
+                    if (isFlashOn) {
+                        flashLightBtn.setText("FLASH");
+                        flashLightOff();
+                        isFlashOn=false;
+                        j = j + 1;
+                    } else {
+                        flashLightBtn.setText("STOPPED");
+                        flashLightOn();
+                        isFlashOn=true;
+                    }
+
+                    if (j % 5 == 0) {
+                        if (delay > 500) {
+                            delay = delay - 100;
+                        }
+                    }
+
+                    handler.postDelayed(this, delay);
+                }
+            };
+            // Start the Runnable immediately
+            handler.post(runnable);
+
+            /*if (isFlashOn) {
                 flashLightBtn.setText("FLASH");
                 flashLightOff();
                 isFlashOn=false;
@@ -79,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 flashLightBtn.setText("STOPPED");
                 flashLightOn();
                 isFlashOn=true;
-            }
+            }*/
         } else {
             Toast.makeText(MainActivity.this, "Flash is not available on your device",
                     Toast.LENGTH_SHORT).show();
@@ -144,31 +235,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
-
-    /*public void flashLight(View view) {
-        String myString = "010101010101";
-        long blinkDelay =50; //Delay in ms
-        for (int i = 0; i < myString.length(); i++) {
-            if (myString.charAt(i) == '0') {
-                params = Camera.getParameters();
-                params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                camera.setParameters(params);
-                camera.startPreview();
-                isFlashOn = true;
-            } else {
-                params = camera.getParameters();
-                params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                camera.setParameters(params);
-                camera.stopPreview();
-                isFlashOn = false;
-
-            }
-            try {
-                Thread.sleep(blinkDelay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }*/
 
     }
 
