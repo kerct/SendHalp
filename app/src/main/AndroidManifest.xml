@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sendhalp">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -8,10 +9,8 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera2.full" />
-
     <application
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
@@ -20,13 +19,19 @@
         android:roundIcon="@mipmap/sendhalp"
         android:supportsRtl="true"
         android:theme="@style/Theme.SendHalp">
+<!--        <receiver android:enabled="true" android:exported="true" android:name=".listeners.ButtonListener" >-->
+<!--            <intent-filter >-->
+<!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.amirarcane.lockscreen.activity.EnterPinActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 
