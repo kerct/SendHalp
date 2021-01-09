@@ -14,9 +14,7 @@
     <application
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
-        android:icon="@mipmap/sendhalp"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/sendhalp"
         android:supportsRtl="true"
         android:theme="@style/Theme.SendHalp">
 <!--        <receiver android:enabled="true" android:exported="true" android:name=".listeners.ButtonListener" >-->
