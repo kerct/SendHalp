@@ -2,41 +2,134 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/latitude_text"
+        android:id="@+id/settingsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:text="LAT"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/textView" />
-
-    <TextView
-        android:id="@+id/longitude_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:text="LONG"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/latitude_text"  />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="168dp"
+        android:text="Settings for Send Halp"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/blinkerSelector"
+        android:layout_width="201dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="167dp"
+        android:checked="true"
+        android:text="Blinker (Front and Back)"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsTitle" />
+
+    <CheckBox
+        android:id="@+id/emergencyMessage"
+        android:layout_width="321dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="47dp"
+        android:checked="true"
+        android:text="Send Emergency Message to User"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/blinkerSelector" />
+
+    <CheckBox
+        android:id="@+id/sendLoca"
+        android:layout_width="321dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="47dp"
+        android:checked="true"
+        android:text="Send Location in Emergency"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emergencyMessage" />
+
+    <CheckBox
+        android:id="@+id/recordAudio"
+        android:layout_width="321dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="47dp"
+        android:checked="true"
+        android:text="Record audio in Emergency"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendLoca" />
+
+    <CheckBox
+        android:id="@+id/callPolice"
+        android:layout_width="321dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="47dp"
+        android:checked="true"
+        android:text="Call Police to your location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recordAudio" />
+
+    <TextView
+        android:id="@+id/blinkSliderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="79dp"
+        android:layout_marginEnd="268dp"
+        android:text="Blinking Interval"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/callPolice" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/blinkSlider"
+        android:layout_width="324dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="44dp"
+        android:stepSize="1"
+        android:valueFrom="0"
+        android:valueTo="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/blinkSliderTitle" />
+
+    <TextView
+        android:id="@+id/messageSliderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="132dp"
+        android:text="Message Sending Interval Per Minute"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/messageSlider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/blinkSlider" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/messageSlider"
+        android:layout_width="324dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="44dp"
+        android:stepSize="1"
+        android:valueFrom="0"
+        android:valueTo="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/messageSliderTitle" />
+
+    <Button
+        android:id="@+id/fakeCallBtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="207dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="102dp"
+        android:text="Start Fake Call"
+        app:cornerRadius="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/messageSlider" />
 
     <Button
         android:id="@+id/locate"
@@ -72,5 +165,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.295" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="87dp"
+        android:layout_height="38dp"
+        android:text="FLASH SCREEN"
+        android:onClick="flashScreen"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttongeneral"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Everything"
+        android:onClick="general"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
+
+    <TextView
+        android:id="@+id/latitude_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="LAT"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/longitude_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="LONG"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/latitude_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
