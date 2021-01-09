@@ -1,7 +1,4 @@
 # SendHalp
-<table><tr><td><div style="text-align:center">
-    <img src="app/src/main/res/images/SendHalp.png" />
-</div></td></tr></table>
 
 SendHalp is an app that aims to get you immediate help from your vicinity and acts as a personal blackbox should unfortunate events befall its user.
 This app can be used by anybody and is particularly built with the vulnerable in mind. This app will allow you to select your trusted individual and allow you to
