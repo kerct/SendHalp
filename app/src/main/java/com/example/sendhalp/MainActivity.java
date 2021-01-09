@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaRecorder recorder = null;
     private String fileName = null;
 
+    //start audio recording
     private void startRecording() {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         recorder.start();
     }
 
+    //stop audio recording
     private void stopRecording() {
         recorder.stop();
         recorder.release();
