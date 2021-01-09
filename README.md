@@ -14,7 +14,7 @@ SendHalp aims to plug this gap through the use of a very well-established, ortho
 Considering just Singapore, the tiny island nation boasts a mobile phone penetration rate of 154.1%. Leveraging on this, SendHalp has the potential to be each and everyone's personal blackbox. 
 With SendHalp, **somebody** will look out for you.
 
-##Inspirations
+## Inspirations
 
 SendHalp takes inspiration from the Shrill alarm, which has the function of alerting the nearby vicinity of immenient danger.
 It takes the functionality of the shrill alarm and augments it with added data points of location and audio right into the phone.
