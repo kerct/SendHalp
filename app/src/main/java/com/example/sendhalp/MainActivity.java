@@ -1,32 +1,8 @@
 package com.example.sendhalp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import android.os.Handler;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.util.Log;
-import android.util.Range;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.Toast;
-
-import com.amirarcane.lockscreen.activity.EnterPinActivity;
-import com.example.sendhalp.listeners.ButtonListener;
-import com.google.android.material.slider.RangeSlider;
-import com.google.android.material.slider.Slider;
-
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.camera2.CameraAccessException;
@@ -34,23 +10,39 @@ import android.hardware.camera2.CameraManager;
 import android.location.Location;
 import android.media.AudioManager;
 import android.media.MediaRecorder;
-import android.os.Build;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
+//import android.view.View;
+//import android.widget.Button;
+//import android.widget.TextView;
+//import android.widget.Toast;
+//
+//import com.google.android.gms.location.FusedLocationProviderClient;
+//import com.google.android.gms.location.LocationServices;
+//import com.google.android.gms.tasks.OnCompleteListener;
+//import com.google.android.gms.tasks.Task;
+//
+//import java.util.Locale;
+
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import java.util.Locale;
+import com.amirarcane.lockscreen.activity.EnterPinActivity;
+import com.google.android.material.slider.RangeSlider;
 
 import java.io.IOException;
 
@@ -79,44 +71,22 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Provides the entry point to the Fused Location Provider API.
      */
-    private FusedLocationProviderClient mFusedLocationClient;
+//    private FusedLocationProviderClient mFusedLocationClient;
 
     /**
      * Represents a geographical location.
      */
     protected Location mLastLocation;
 
-    private TextView mLatitudeText;
-    private TextView mLongitudeText;
+//    private TextView mLatitudeText;
+//    private TextView mLongitudeText;
 
     private MediaRecorder recorder = null;
     private String fileName = null;
 
-    //start audio recording
-    private void startRecording() {
-        recorder = new MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        recorder.setOutputFile(fileName);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        try {
-            recorder.prepare();
-        } catch (IOException e) {
-        }
-
-        recorder.start();
-    }
-
-    //stop audio recording
-    private void stopRecording() {
-        recorder.stop();
-        recorder.release();
-        recorder = null;
-    }
-
     Button flashLightBtn;
     private final int CAMERA_REQUEST_CODE = 2;
+    private final int MIC_REQUEST_CODE = 0;
     boolean hasCameraFlash = false;
     private boolean isFlashOn = false;
     int k = 2;
@@ -129,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         setContentView(R.layout.activity_main);
+//        View view = getRootView().findViewById(_id);
 
         CheckBox blinkerChecker = (CheckBox) findViewById(R.id.blinkerSelector);
         CheckBox emergencyChecker = (CheckBox) findViewById(R.id.emergencyMessage);
@@ -199,20 +170,20 @@ public class MainActivity extends AppCompatActivity {
 
         hasCameraFlash = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
 
-        flashLightBtn = findViewById(R.id.Flash);
+//        mLatitudeText = (TextView) findViewById((R.id.latitude_text));
+//        mLongitudeText = (TextView) findViewById((R.id.longitude_text));
+//
+//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        flashLightBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                askPermission(Manifest.permission.CAMERA, CAMERA_REQUEST_CODE);
-
-            }
-        });
-
-        mLatitudeText = (TextView) findViewById((R.id.latitude_text));
-        mLongitudeText = (TextView) findViewById((R.id.longitude_text));
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        flashLightBtn = findViewById(R.id.Flash);
+//
+//        flashLightBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                askPermission(Manifest.permission.CAMERA, CAMERA_REQUEST_CODE);
+//
+//            }
+//        });
     }
 
     @Override
@@ -220,15 +191,42 @@ public class MainActivity extends AppCompatActivity {
         long timeDiffBetweenPresses = Math.abs(event.getDownTime() - event.getEventTime());
         if (KeyEvent.KEYCODE_VOLUME_DOWN == event.getKeyCode() || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             if (timeDiffBetweenPresses < PRESS_INTERVAL && timeDiffBetweenPresses != 0) {
-                Intent intent = new Intent(this, Termination.class);
-                startActivity(intent);
+//                Intent intent = new Intent(this, Termination.class);
+//                startActivity(intent);
+                askCameraPermission(Manifest.permission.CAMERA, CAMERA_REQUEST_CODE);
+                flashScreen();
+                playAlarm();
+                askMicPermission(Manifest.permission.RECORD_AUDIO, MIC_REQUEST_CODE);
             }
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    public void playAlarm(View view) {
+    //start audio recording
+    private void startRecording() {
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setOutputFile(fileName);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+        }
+
+        recorder.start();
+    }
+
+    //stop audio recording
+    private void stopRecording() {
+        recorder.stop();
+        recorder.release();
+        recorder = null;
+    }
+
+    public void playAlarm() {
         AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alert == null) {
@@ -249,10 +247,9 @@ public class MainActivity extends AppCompatActivity {
         };
         handler.post(runnable);
         //r.stop();
-
     }
 
-    public void flashScreen(View view) {
+    public void flashScreen() {
         androidx.constraintlayout.widget.ConstraintLayout bgElement
                 = (androidx.constraintlayout.widget.ConstraintLayout) findViewById(R.id.container);
 
@@ -317,12 +314,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("APP", "HELMM" + i);
 
                     if (isFlashOn) {
-                        flashLightBtn.setText("FLASH");
+//                        flashLightBtn.setText("FLASH");
                         flashLightOff();
                         isFlashOn=false;
                         j = j + 1;
                     } else {
-                        flashLightBtn.setText("STOPPED");
+//                        flashLightBtn.setText("STOPPED");
                         flashLightOn();
                         isFlashOn=true;
                     }
@@ -386,14 +383,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void askPermission(String permission,int requestCode) {
+    private void askMicPermission(String permission,int requestCode) {
         if (ContextCompat.checkSelfPermission(this,permission)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{permission},requestCode);
         } else {
             // Already have permission
+            startRecording();
+        }
+    }
+
+    private void askCameraPermission(String permission,int requestCode) {
+        if (ContextCompat.checkSelfPermission(this,permission)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{permission},requestCode);
+
+        }else {
+            // Already have permission
             flashLight();
         }
-
     }
 
     @Override
@@ -409,13 +415,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "Camera Permission Denied", Toast.LENGTH_LONG).show();
                 }
                 break;
-            case LOCATION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getLastLocation();
-                } else {
-                    Toast.makeText(this, "Location Permission Denied", Toast.LENGTH_LONG).show();
-                }
-                break;
+//            case LOCATION_REQUEST_CODE:
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    getLastLocation();
+//                } else {
+//                    Toast.makeText(this, "Location Permission Denied", Toast.LENGTH_LONG).show();
+//                }
+//                break;
         }
     }
 
@@ -453,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
 //            getLastLocation();
 //        }
 //    }
-
+/*
     public void locate(View view) {
         if (!checkPermissions()) {
             startLocationPermissionRequest();
@@ -496,5 +502,5 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 LOCATION_REQUEST_CODE);
     }
-
+*/
 }
