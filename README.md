@@ -4,7 +4,8 @@
 </div></td></tr></table>
 
 SendHalp is an app that aims to get you immediate help from your vicinity and acts as a personal blackbox should unfortunate events befall its user.
-This app can be used by anybody and is particularly built with the vulnerable in mind.
+This app can be used by anybody and is particularly built with the vulnerable in mind. This app will allow you to select your trusted individual and allow you to
+send critical information to them during an emergency.
 
 ## Background
 
